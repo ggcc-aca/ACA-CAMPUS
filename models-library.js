@@ -1,4 +1,3 @@
-Attempting to perform the InitializeDefaultDrives operation on the 'FileSystem' provider failed.
 const campusModels=[{
   id:'registro-capacitaciones',
   title:'Registro de capacitaciones',
@@ -6,7 +5,7 @@ const campusModels=[{
   format:'PDF',
   description:'Planilla institucional para documentar la actividad, identificar asistentes y dejar constancia de la capacitación realizada.',
   fields:['Dependencia o concesionario','Temario desarrollado','Sector, DNI, nombre y firma de asistentes','Fecha y duración','Firma del concesionario','Firma del Gestor de Calidad'],
-  file:'assets/modelos/planilla-registro-capacitacion.pdf'
+  file:'planilla-registro-capacitacion.pdf'
 }];
 
 function modelIcon(){return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"></path><path d="M14 3v5h5M10 12h5M10 16h5"></path></svg>`}
