@@ -10,9 +10,18 @@ const toolSectorGroups=[
 const sectorExplorerIcon=()=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h6l2 2h8v11H4z"></path><path d="M4 10h16"></path><circle cx="8" cy="14" r="1.2"></circle><circle cx="12" cy="14" r="1.2"></circle><circle cx="16" cy="14" r="1.2"></circle></svg>`;
 const sectorToolIcon=type=>type==='safety'?safetyIcon():type==='role'?resourcesIcon():realCaseIcon();
 function toolsForSector(group){
-  const safety=safetySheets.filter(item=>item.filters.includes(group.safetyFilter));
-  const roles=rolePlayingSheets.filter(item=>item.applies.includes(group.roleFilter));
-  const cases=realCases.filter(item=>item.sector===group.caseSector);
+  let safety=safetySheets.filter(item=>item.filters.includes(group.safetyFilter));
+  let roles=rolePlayingSheets.filter(item=>item.applies.includes(group.roleFilter));
+  let cases=realCases.filter(item=>item.sector===group.caseSector);
+  if(group.slug==='seguridad'){
+    const operationalGroups=toolSectorGroups.filter(item=>item.slug!=='seguridad');
+    const assignedSafety=new Set(operationalGroups.flatMap(item=>safetySheets.filter(sheet=>sheet.filters.includes(item.safetyFilter)).map(sheet=>sheet.id)));
+    const assignedRoles=new Set(operationalGroups.flatMap(item=>rolePlayingSheets.filter(sheet=>sheet.applies.includes(item.roleFilter)).map(sheet=>sheet.id)));
+    const assignedCases=new Set(operationalGroups.flatMap(item=>realCases.filter(entry=>entry.sector===item.caseSector).map(entry=>entry.id)));
+    safety=safety.filter(item=>!assignedSafety.has(item.id));
+    roles=roles.filter(item=>!assignedRoles.has(item.id));
+    cases=cases.filter(item=>!assignedCases.has(item.id));
+  }
   return {safety,roles,cases,total:safety.length+roles.length+cases.length};
 }
 function sectorExplorerTotal(){return toolSectorGroups.reduce((total,group)=>total+toolsForSector(group).total,0)}
